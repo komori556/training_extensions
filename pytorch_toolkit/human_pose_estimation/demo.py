@@ -89,7 +89,7 @@ def run_demo(net, image_provider, height_size, cpu, track_ids):
   previous_poses = []
   start = time.time()
   for img in image_provider:
-    img = cv2.resize(img , (int(img.shape[0]*0.5), int(img.shape[1]*0.5)))
+    img = cv2.resize(img , (int(img.shape[1]*0.5), int(img.shape[0]*0.5)))
     orig_img = img.copy()
     
     print(orig_img.shape)
