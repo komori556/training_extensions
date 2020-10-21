@@ -154,7 +154,7 @@ if __name__ == '__main__':
     raise ValueError('Either --video or --image has to be provided')
   
   net = PoseEstimationWithMobileNet()
-  checkpoint = torch.load(args.checkpoint_path, map_location='cpu')
+  checkpoint = torch.load(args.checkpoint_path, map_location='cpu')['state_dict']
   checkpoint = torch.quantization.quantize_dynamic(
     checkpoint, {torch.nn.Linear}, dtype=torch.qint8
   )
