@@ -90,6 +90,7 @@ def run_demo(net, image_provider, height_size, cpu, track_ids):
   start = time.time()
   for img in image_provider:
     orig_img = img.copy()
+    print(orig_img.shape)
     heatmaps, pafs, scale, pad = infer_fast(net, img, height_size, stride, upsample_ratio, cpu)
     
     total_keypoints_num = 0
