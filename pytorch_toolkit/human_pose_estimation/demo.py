@@ -2,8 +2,11 @@ import argparse
 
 import cv2
 import numpy as np
+import os
 import torch
 import time
+
+
 from models.with_mobilenet import PoseEstimationWithMobileNet
 from modules.keypoints import extract_keypoints, group_keypoints
 from modules.load_state import load_state
@@ -161,8 +164,16 @@ if __name__ == '__main__':
   frame_provider = ImageReader(args.images)
   if args.video != '':
     frame_provider = VideoReader(args.video)
-  net = torch.quantization.quantize_dynamic(
+  after_net = torch.quantization.quantize_dynamic(
     net, {torch.nn.Linear}, dtype=torch.qint8
   )
+
+  def print_size_of_model(model):
+    torch.save(model.state_dict(), "temp.p")
+    print('Size (MB):', os.path.getsize("temp.p")/1e6)
+    os.remove('temp.p')
+
+  print_size_of_model(net)
+  print_size_of_model(after_net)
   
-  run_demo(net, frame_provider, args.height_size, args.cpu, args.track_ids)
+  run_demo(after_net, frame_provider, args.height_size, args.cpu, args.track_ids)
