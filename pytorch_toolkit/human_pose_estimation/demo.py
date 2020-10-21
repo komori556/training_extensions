@@ -165,7 +165,7 @@ if __name__ == '__main__':
   if args.video != '':
     frame_provider = VideoReader(args.video)
   after_net = torch.quantization.quantize_dynamic(
-    net, {torch.nn.Linear}, dtype=torch.qint8
+    net, dtype=torch.qint8
   )
 
   def print_size_of_model(model):
