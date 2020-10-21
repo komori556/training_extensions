@@ -155,13 +155,14 @@ if __name__ == '__main__':
   
   net = PoseEstimationWithMobileNet()
   checkpoint = torch.load(args.checkpoint_path, map_location='cpu')['state_dict']
-  checkpoint = torch.quantization.quantize_dynamic(
-    checkpoint, {torch.nn.Linear}, dtype=torch.qint8
-  )
+  
   load_state(net, checkpoint)
   
   frame_provider = ImageReader(args.images)
   if args.video != '':
     frame_provider = VideoReader(args.video)
+  net = torch.quantization.quantize_dynamic(
+    net, {torch.nn.Linear}, dtype=torch.qint8
+  )
   
   run_demo(net, frame_provider, args.height_size, args.cpu, args.track_ids)
